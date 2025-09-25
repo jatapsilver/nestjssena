@@ -23,4 +23,8 @@ export class UsersRepository {
     console.log('Se devolvio la base de datos de todos los usuarios');
     return this.users;
   }
+
+  getUserByIdRepository() {
+    return 'logica del repositorio para devolver un usuario por id';
+  }
 }

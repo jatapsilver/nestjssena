@@ -10,6 +10,11 @@ export class UsersController {
     return this.usersService.getAllUserService();
   }
 
+  @Get('getUserById')
+  getUserById() {
+    return this.usersService.getUserByIdService();
+  }
+
   @Post('createUser')
   postCreateUser() {
     return 'ruta para crear un usuario';
