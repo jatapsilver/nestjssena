@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 @Injectable()
 export class UsersRepository {
@@ -24,7 +28,11 @@ export class UsersRepository {
     return this.users;
   }
 
-  getUserByIdRepository() {
-    return 'logica del repositorio para devolver un usuario por id';
+  getUserByIdRepository(id: string) {
+    const user = this.users.find((user) => user.id === Number(id));
+    if (!user) {
+      throw new NotFoundException('No existe un usuario con ese id');
+    }
+    return user;
   }
 }

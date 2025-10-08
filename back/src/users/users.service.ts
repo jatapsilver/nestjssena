@@ -8,7 +8,7 @@ export class UsersService {
     return this.usersRepository.getAllUserRepository();
   }
 
-  getUserByIdService() {
-    return this.usersRepository.getUserByIdRepository();
+  getUserByIdService(id: string) {
+    return this.usersRepository.getUserByIdRepository(id);
   }
 }

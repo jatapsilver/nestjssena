@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -10,9 +18,21 @@ export class UsersController {
     return this.usersService.getAllUserService();
   }
 
-  @Get('getUserById')
-  getUserById() {
-    return this.usersService.getUserByIdService();
+  @Get('getUserById/:id')
+  getUserById(@Param('id') id: string) {
+    return this.usersService.getUserByIdService(id);
+  }
+
+  @HttpCode(418)
+  @Get('coffees')
+  makeCoffe() {
+    return 'No puedo preparar cafe soy una tetera';
+  }
+
+  @HttpCode(400)
+  @Get()
+  findAll() {
+    return { message: 'Usuarios no encontrados' };
   }
 
   @Post('createUser')
