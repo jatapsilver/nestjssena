@@ -44,7 +44,7 @@ export class User {
   email: string;
 
   @Column({
-    type: 'int',
+    type: 'bigint',
     unique: true,
   })
   phoneNumber: number;

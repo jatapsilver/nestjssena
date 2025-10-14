@@ -9,9 +9,14 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UnauthorizedException,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UserAuthGuard } from 'src/guards/user-auth.guard';
+import { DateAdderInterceptor } from 'src/interceptors/date-adder.interceptor';
 
 export interface IUser {
   name: string;
@@ -29,6 +34,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   //Ruta para obtener todos los usuarios
   @Get('getAllUser')
+  @UseGuards(UserAuthGuard)
   getAllUser(@Query('name') name: string) {
     if (name) {
       return this.usersService.getUserByNameService(name);
@@ -62,8 +68,11 @@ export class UsersController {
   }
 
   @Post('createUser')
-  postCreateUser(@Body() user: IUser) {
-    return this.usersService.postCreateUserService(user);
+  @UseInterceptors(DateAdderInterceptor)
+  postCreateUser(@Body() user: IUser, @Req() request) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const modifiedUser = { ...user, createAt: request.now };
+    return this.usersService.postCreateUserService(modifiedUser);
   }
 
   @Put('updateUser')

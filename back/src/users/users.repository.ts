@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUser, IUserUpdate } from './users.controller';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/users.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersRepository {
@@ -25,6 +28,11 @@ export class UsersRepository {
       email: 'john.doe2@example.com',
     },
   ];
+
+  constructor(
+    @InjectRepository(User)
+    private readonly userBD: Repository<User>,
+  ) {}
   getAllUserRepository() {
     console.log('Se devolvio la base de datos de todos los usuarios');
     return this.users;
@@ -53,7 +61,6 @@ export class UsersRepository {
   postCreateUserRepository(user: IUser) {
     const id = this.users.length + 1;
     const newUser = { id, ...user };
-    console.log(newUser);
     this.users.push(newUser);
     return this.users;
   }
