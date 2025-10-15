@@ -10,6 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CredentialModule } from './credential/credential.module';
 import { User } from './entities/users.entity';
 import { Credential } from './entities/credential.entity';
+import { OrdersModule } from './orders/orders.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { Credential } from './entities/credential.entity';
     AuthModule,
     ProductsModule,
     CredentialModule,
+    OrdersModule,
+    SeedModule,
   ],
   controllers: [AppController],
   providers: [AppService, DataLoaderUsers],

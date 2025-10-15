@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Credential } from './entities/credential.entity';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Roles } from './enum/roles.enum';
 
 @Injectable()
 export class AppService {
@@ -17,17 +18,18 @@ export class AppService {
 export class DataLoaderUsers implements OnModuleInit {
   constructor(
     @InjectRepository(User)
-    private readonly userBD: Repository<User>,
+    private readonly userDataBase: Repository<User>,
     @InjectRepository(Credential)
-    private readonly credentialBD: Repository<Credential>,
+    private readonly credentialDataBase: Repository<Credential>,
   ) {}
 
   async onModuleInit() {
-    const usersCount = await this.userBD.count();
+    const usersCount = await this.userDataBase.count();
 
     if (usersCount === 0) {
       console.log('Cargando usuarios iniciales...');
-      const queryRunner = this.userBD.manager.connection.createQueryRunner();
+      const queryRunner =
+        this.userDataBase.manager.connection.createQueryRunner();
       await queryRunner.connect();
       await queryRunner.startTransaction();
       try {
@@ -42,17 +44,19 @@ export class DataLoaderUsers implements OnModuleInit {
           email: string;
           phoneNumber: string;
           birthDate: string;
+          roles: string;
         }>;
 
         await Promise.all(
           users.map(async (user) => {
-            const newCredential = this.credentialBD.create({
+            const newCredential = this.credentialDataBase.create({
               userName: user.username,
               password: user.password,
+              roles: user.roles as Roles,
             });
             await queryRunner.manager.save(newCredential);
 
-            const newUser = this.userBD.create({
+            const newUser = this.userDataBase.create({
               name: user.name,
               lastName: user.lastName,
               address: user.address,
@@ -73,7 +77,7 @@ export class DataLoaderUsers implements OnModuleInit {
         await queryRunner.release();
       }
     } else {
-      console.log('Los usuarios ya existen en laa base de datos');
+      console.log('Los usuarios ya existen en la base de datos');
     }
   }
 }
