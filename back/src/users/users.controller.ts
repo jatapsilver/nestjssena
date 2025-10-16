@@ -6,17 +6,16 @@ import {
   Headers,
   HttpCode,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
-  Req,
   UnauthorizedException,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserAuthGuard } from 'src/guards/user-auth.guard';
-import { DateAdderInterceptor } from 'src/interceptors/date-adder.interceptor';
+import { CreatedUserDto } from './Dtos/createUser.dto';
 
 export interface IUser {
   name: string;
@@ -42,9 +41,9 @@ export class UsersController {
     return this.usersService.getAllUserService();
   }
 
-  @Get('getUserById/:id')
-  getUserById(@Param('id') id: string) {
-    return this.usersService.getUserByIdService(id);
+  @Get('getUserById/:uuid')
+  getUserById(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.usersService.getUserByIdService(uuid);
   }
 
   @HttpCode(418)
@@ -68,12 +67,18 @@ export class UsersController {
   }
 
   @Post('createUser')
-  @UseInterceptors(DateAdderInterceptor)
-  postCreateUser(@Body() user: IUser, @Req() request) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const modifiedUser = { ...user, createAt: request.now };
-    return this.usersService.postCreateUserService(modifiedUser);
+  postCreateUser(@Body() createUserDto: CreatedUserDto) {
+    console.log(createUserDto);
+    return this.usersService.postCreateUserService(createUserDto);
   }
+
+  // @Post('createUser')
+  // @UseInterceptors(DateAdderInterceptor)
+  // postCreateUser(@Body() user: IUser, @Req() request) {
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  //   const modifiedUser = { ...user, createAt: request.now };
+  //   return this.usersService.postCreateUserService(modifiedUser);
+  // }
 
   @Put('updateUser')
   putUpdateUser(@Body() user: IUserUpdate) {

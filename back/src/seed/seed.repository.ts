@@ -1,8 +1,9 @@
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/cateogires.entity';
 import { Repository } from 'typeorm';
 
+@Injectable()
 export class SeedRepository {
   constructor(
     @InjectRepository(Category)
@@ -16,7 +17,7 @@ export class SeedRepository {
 
     const categories = [
       { name: 'Tecnologia' },
-      { name: 'Home' },
+      { name: 'Casa' },
       { name: 'Videojuegos' },
     ];
 

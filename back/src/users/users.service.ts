@@ -13,8 +13,8 @@ export class UsersService {
     return this.usersRepository.getAllUserRepository();
   }
 
-  getUserByIdService(id: string) {
-    return this.usersRepository.getUserByIdRepository(id);
+  getUserByIdService(uuid: string) {
+    return this.usersRepository.getUserByIdRepository(uuid);
   }
 
   getUserByNameService(name: string) {
@@ -22,15 +22,6 @@ export class UsersService {
   }
 
   postCreateUserService(user: IUser) {
-    if (!user.email || !user.name) {
-      throw new ConflictException(
-        'El correo electronico y el nombre son obligatorio',
-      );
-    }
-    const userExisting = this.usersRepository.getUserByEmail(user.email);
-    if (userExisting) {
-      throw new ConflictException('Este correo ya se encuentra registrado');
-    }
     return this.usersRepository.postCreateUserRepository(user);
   }
 

@@ -31,20 +31,32 @@ export class UsersRepository {
 
   constructor(
     @InjectRepository(User)
-    private readonly userBD: Repository<User>,
+    private readonly userDataBase: Repository<User>,
   ) {}
   getAllUserRepository() {
     console.log('Se devolvio la base de datos de todos los usuarios');
     return this.users;
   }
 
-  getUserByIdRepository(id: string) {
-    const user = this.users.find((user) => user.id === Number(id));
+  async getUserByIdRepository(uuid: string) {
+    const user = await this.userDataBase.findOne({
+      where: { uuid: uuid },
+      relations: ['credential_id'],
+    });
     if (!user) {
       throw new NotFoundException('No existe un usuario con ese id');
     }
     return user;
   }
+
+  // Esta era la ruta inicial para obtener un usuario con la base hardcodeada
+  // getUserByIdRepository(id: string) {
+  //   const user = this.users.find((user) => user.id === Number(id));
+  //   if (!user) {
+  //     throw new NotFoundException('No existe un usuario con ese id');
+  //   }
+  //   return user;
+  // }
 
   getUserByNameRepository(name: string) {
     const users = this.users.filter((user) => user.name === name);
@@ -59,10 +71,7 @@ export class UsersRepository {
   }
 
   postCreateUserRepository(user: IUser) {
-    const id = this.users.length + 1;
-    const newUser = { id, ...user };
-    this.users.push(newUser);
-    return this.users;
+    return 'vamos a crear un usuario';
   }
 
   getUserByIdTwoRepository(id: number) {
@@ -76,6 +85,6 @@ export class UsersRepository {
     }
     userExisting.email = user.email;
     userExisting.name = user.name;
-    return userExisting;
+    return this.users;
   }
 }
