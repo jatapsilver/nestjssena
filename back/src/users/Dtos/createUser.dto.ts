@@ -50,9 +50,7 @@ export class CreatedUserDto {
   address: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  @IsEmail({
-    message: 'El correo electronico no tiene el formato correcto',
-  })
+  @IsEmail()
   email: string;
   phoneNumber: number;
   birthDate: Date;
