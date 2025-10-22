@@ -1,11 +1,14 @@
 import {
   IsEmail,
+  IsInt,
   IsNotEmpty,
   IsString,
   Matches,
   MaxLength,
   MinLength,
+  Validate,
 } from 'class-validator';
+import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 
 export class CreatedUserDto {
   @IsNotEmpty({ message: 'El nombre es requerido' })
@@ -38,14 +41,62 @@ export class CreatedUserDto {
   @MaxLength(25, {
     message: 'El apellido no puede contener mas de 25 caracteres',
   })
-  lastName: string;
+  lastname: string;
 
+  @IsNotEmpty({
+    message: 'La dirrecion es requerida',
+  })
+  @IsString({
+    message: 'La dirrecion debe ser una cadena de caracteres',
+  })
+  @MinLength(8, {
+    message: 'La dirrecion debe tener minimo 8 caracteres',
+  })
   address: string;
 
-  @IsEmail()
+  @IsEmail(
+    {},
+    {
+      message: 'El email debe tener un formato de correo electronico',
+    },
+  )
   email: string;
+
+  @IsNotEmpty({
+    message: 'El numero telefonico es requerido',
+  })
+  @IsInt({
+    message: 'El numero telefonico debe ser un entero',
+  })
   phoneNumber: number;
-  birthDate: Date;
+
+  @IsNotEmpty({
+    message: 'La fecha de cumpleaños es requerida',
+  })
+  @Matches(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/, {
+    message: 'La fecha de cumpleaños debe estar en formato dd/mm/aaaa',
+  })
+  birthDate: string;
+
+  @IsNotEmpty({
+    message: 'El nombre de usuario es requerido',
+  })
+  @IsString({
+    message: 'El nombre de usuario debe ser una cadena caracteres',
+  })
   userName: string;
+
+  @IsNotEmpty({ message: 'El password es requerido' })
+  @IsString({ message: 'El password debe ser una cadena de caracteres' })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,}$/,
+    {
+      message:
+        'El password debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial',
+    },
+  )
   password: string;
+
+  @Validate(MatchPassword, ['password'])
+  confirmPassword: string;
 }

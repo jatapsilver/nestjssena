@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { IUser, IUserUpdate } from './users.controller';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
+import { CreatedUserDto } from './Dtos/createUser.dto';
+import { Credential } from 'src/entities/credential.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersRepository {
@@ -32,6 +34,8 @@ export class UsersRepository {
   constructor(
     @InjectRepository(User)
     private readonly userDataBase: Repository<User>,
+    @InjectRepository(Credential)
+    private readonly credentialDataBase: Repository<Credential>,
   ) {}
   getAllUserRepository() {
     console.log('Se devolvio la base de datos de todos los usuarios');
@@ -66,25 +70,60 @@ export class UsersRepository {
     return users;
   }
 
-  getUserByEmail(email: string) {
-    return this.users.find((user) => user.email === email);
+  async getUserByEmail(email: string) {
+    return await this.userDataBase.findOne({ where: { email: email } });
   }
 
-  postCreateUserRepository(user: IUser) {
-    return 'vamos a crear un usuario';
+  async getByUserPhoneNumber(phoneNumber: number) {
+    return await this.userDataBase.findOne({
+      where: { phoneNumber: phoneNumber },
+    });
   }
+
+  async createUserRepository(createUserDto: CreatedUserDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    const hashedPassword: string = await bcrypt.hash(
+      createUserDto.password,
+      10,
+    );
+
+    const newCredential = this.credentialDataBase.create({
+      userName: createUserDto.userName,
+      password: hashedPassword,
+    });
+    await this.credentialDataBase.save(newCredential);
+
+    const newUser = this.userDataBase.create({
+      name: createUserDto.name,
+      lastName: createUserDto.lastname,
+      email: createUserDto.email,
+      phoneNumber: createUserDto.phoneNumber,
+      address: createUserDto.address,
+      birthDate: createUserDto.birthDate,
+      credential_id: newCredential,
+    });
+    await this.userDataBase.save(newUser);
+    console.log(
+      `Se creo el nuevo usuario con username: ${newUser.credential_id.userName}`,
+    );
+    return 'Usuario creado en la base de datos';
+  }
+
+  // postCreateUserRepository(user: IUser) {
+  //   return 'vamos a crear un usuario';
+  // }
 
   getUserByIdTwoRepository(id: number) {
     return this.users.find((user) => user.id === id);
   }
 
-  getUpdateUserRepository(user: IUserUpdate) {
-    const userExisting = this.users.find((user) => user.id === user.id);
-    if (!userExisting) {
-      throw new NotFoundException('Este Usuario no existe');
-    }
-    userExisting.email = user.email;
-    userExisting.name = user.name;
-    return this.users;
-  }
+  // getUpdateUserRepository(user: IUserUpdate) {
+  //   const userExisting = this.users.find((user) => user.id === user.id);
+  //   if (!userExisting) {
+  //     throw new NotFoundException('Este Usuario no existe');
+  //   }
+  //   userExisting.email = user.email;
+  //   userExisting.name = user.name;
+  //   return this.users;
+  // }
 }

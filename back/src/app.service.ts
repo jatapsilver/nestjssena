@@ -6,6 +6,7 @@ import { Credential } from './entities/credential.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Roles } from './enum/roles.enum';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AppService {
@@ -49,9 +50,11 @@ export class DataLoaderUsers implements OnModuleInit {
 
         await Promise.all(
           users.map(async (user) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+            const hashedPassword: string = await bcrypt.hash(user.password, 10);
             const newCredential = this.credentialDataBase.create({
               userName: user.username,
-              password: user.password,
+              password: hashedPassword,
               roles: user.roles as Roles,
             });
             await queryRunner.manager.save(newCredential);

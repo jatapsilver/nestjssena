@@ -8,7 +8,6 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  Put,
   Query,
   UnauthorizedException,
   UseGuards,
@@ -16,17 +15,6 @@ import {
 import { UsersService } from './users.service';
 import { UserAuthGuard } from 'src/guards/user-auth.guard';
 import { CreatedUserDto } from './Dtos/createUser.dto';
-
-export interface IUser {
-  name: string;
-  email: string;
-}
-
-export interface IUserUpdate {
-  id: number;
-  name: string;
-  email: string;
-}
 
 @Controller('users')
 export class UsersController {
@@ -68,7 +56,6 @@ export class UsersController {
 
   @Post('createUser')
   postCreateUser(@Body() createUserDto: CreatedUserDto) {
-    console.log(createUserDto);
     return this.usersService.postCreateUserService(createUserDto);
   }
 
@@ -80,10 +67,10 @@ export class UsersController {
   //   return this.usersService.postCreateUserService(modifiedUser);
   // }
 
-  @Put('updateUser')
-  putUpdateUser(@Body() user: IUserUpdate) {
-    return this.usersService.putUpdateUser(user);
-  }
+  // @Put('updateUser')
+  // putUpdateUser(@Body() user: IUserUpdate) {
+  //   return this.usersService.putUpdateUser(user);
+  // }
 
   @Delete('deleteUser')
   deleteUser() {

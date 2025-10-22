@@ -6,4 +6,11 @@ export class ProductsController {
   getAllProducts() {
     return 'Ruta de todos los productos';
   }
+  // @Post('upload')
+  // @UseInterceptors(FileInterceptor('file'))
+  // uploadFile(@UploadedFile() file: MulterFile) {
+  //   // uploadFile(@UploadedFile() file: Express.Multer.File) {
+  //   // }
+  //   return file;
+  // }
 }
