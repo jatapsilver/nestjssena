@@ -13,15 +13,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserAuthGuard } from 'src/guards/user-auth.guard';
 import { CreatedUserDto } from './Dtos/createUser.dto';
+import { AuthGuard } from 'src/auth/Guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   //Ruta para obtener todos los usuarios
   @Get('getAllUser')
-  @UseGuards(UserAuthGuard)
+  @UseGuards(AuthGuard)
   getAllUser(@Query('name') name: string) {
     if (name) {
       return this.usersService.getUserByNameService(name);

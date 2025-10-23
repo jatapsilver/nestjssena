@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Credential } from './entities/credential.entity';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Roles } from './enum/roles.enum';
+import { RolesEnum } from './enum/roles.enum';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -55,7 +55,7 @@ export class DataLoaderUsers implements OnModuleInit {
             const newCredential = this.credentialDataBase.create({
               userName: user.username,
               password: hashedPassword,
-              roles: user.roles as Roles,
+              roles: user.roles as RolesEnum,
             });
             await queryRunner.manager.save(newCredential);
 
