@@ -1,16 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Delete, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private readonly productService: ProductsService) {}
+  //ruta para obtener todos los productos
   @Get('getAllProducts')
   getAllProducts() {
-    return 'Ruta de todos los productos';
+    return this.productService.getAllProductsService();
   }
-  // @Post('upload')
-  // @UseInterceptors(FileInterceptor('file'))
-  // uploadFile(@UploadedFile() file: MulterFile) {
-  //   // uploadFile(@UploadedFile() file: Express.Multer.File) {
-  //   // }
-  //   return file;
-  // }
+
+  @Delete('delete/:uuid')
+  deleteProduct(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.productService.deleteProductsService(uuid);
+  }
 }

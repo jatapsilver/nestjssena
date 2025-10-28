@@ -51,6 +51,12 @@ export class Products {
   })
   createAt: Date;
 
+  @Column({
+    type: 'boolean',
+    default: true,
+  })
+  isActive: boolean;
+
   @ManyToMany(() => Category, (category) => category.products)
   categories: Category[];
 
