@@ -15,13 +15,17 @@ import {
 import { UsersService } from './users.service';
 import { CreatedUserDto } from './Dtos/createUser.dto';
 import { AuthGuard } from 'src/auth/Guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesEnum } from 'src/enum/roles.enum';
+import { RolesGuard } from 'src/auth/Guards/roles.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   //Ruta para obtener todos los usuarios
   @Get('getAllUser')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(RolesEnum.USER)
   getAllUser(@Query('name') name: string) {
     if (name) {
       return this.usersService.getUserByNameService(name);

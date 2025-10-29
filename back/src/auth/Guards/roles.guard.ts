@@ -22,14 +22,14 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const payload = request.payload;
+    const payload = request.user;
 
     const hasRole = () =>
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-      requiredRoles.some((roles) => payload?.roles?.includes(roles));
+      requiredRoles.some((role) => payload?.role?.includes(role));
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const validate = payload && payload.roles && hasRole();
+    const validate = payload && payload.role && hasRole();
 
     if (!validate) {
       throw new ForbiddenException(
