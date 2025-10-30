@@ -7,6 +7,7 @@ export class CredentialRepository {
     @InjectRepository(Credential)
     private readonly credentialDataBase: Repository<Credential>,
   ) {}
+  //metodo para obtener un usuario por su username
   async getCredentialByUsername(userName: string) {
     return await this.credentialDataBase.findOne({
       where: { userName: userName },
