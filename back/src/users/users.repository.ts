@@ -106,8 +106,24 @@ export class UsersRepository {
       userExisting.lastName = updateUserDto.lastname;
     }
 
+    if (updateUserDto.email) {
+      userExisting.email = updateUserDto.email;
+    }
+
+    if (updateUserDto.phoneNumber) {
+      userExisting.phoneNumber = updateUserDto.phoneNumber;
+    }
+
+    if (updateUserDto.address) {
+      userExisting.address = updateUserDto.address;
+    }
+
+    if (updateUserDto.birthDate) {
+      userExisting.birthDate = new Date(updateUserDto.birthDate);
+    }
+
     await this.userDataBase.save(userExisting);
-    return { message: 'Usuario actualizado' };
+    return { message: 'Usuario actualizado exitosamente' };
   }
 
   //metodo para hacer un softDelete del usuario
