@@ -20,6 +20,12 @@ export class Category {
   })
   name: string;
 
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
+
   @ManyToMany(() => Products, (product) => product.categories)
   @JoinTable()
   products: Products[];
