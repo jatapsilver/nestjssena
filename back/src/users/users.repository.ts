@@ -75,13 +75,16 @@ export class UsersRepository {
     });
     await this.credentialDataBase.save(newCredential);
 
+    const [day, month, year] = createUserDto.birthDate.split('/');
+    const newBirthDate = new Date(+year, +month - 1, +day);
+
     const newUser = this.userDataBase.create({
       name: createUserDto.name,
       lastName: createUserDto.lastname,
       email: createUserDto.email,
       phoneNumber: createUserDto.phoneNumber,
       address: createUserDto.address,
-      birthDate: createUserDto.birthDate,
+      birthDate: newBirthDate,
       credential_id: newCredential,
     });
     await this.userDataBase.save(newUser);
