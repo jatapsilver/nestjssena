@@ -11,11 +11,12 @@ const config: DataSourceOptions = {
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/migrations/*{.ts, .js}'],
-  logging: false, // muestra por consola la interaccion con la base de datos
+  entities: ['src/entities/**/*.entity.ts'],
+  migrations: ['src/migrations/**/*.ts'],
+  logging: true, // muestra por consola la interaccion con la base de datos
   synchronize: false, // sincroniza las entidades con la base de datos
   dropSchema: false, // limpia, borra y crea nuevamente todas las entidades
+  migrationsTableName: 'migrations_history',
 };
 
 export default registerAs('typeorm', () => config);
