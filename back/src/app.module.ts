@@ -14,6 +14,7 @@ import { OrdersModule } from './orders/orders.module';
 import { SeedModule } from './seed/seed.module';
 import { JwtModule } from '@nestjs/jwt';
 import { CategoryModule } from './category/category.module';
+import { OrderDetailModule } from './order_detail/order_detail.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CategoryModule } from './category/category.module';
       signOptions: { expiresIn: '1h' },
     }),
     CategoryModule,
+    OrderDetailModule,
   ],
   controllers: [AppController],
   providers: [AppService, DataLoaderUsers],

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from 'src/entities/product.entity';
 import { Repository } from 'typeorm';
+import { CreatedProductDto } from './Dtos/createProduct.dto';
+import { UpdateProductDto } from './Dtos/updateProduct.dto';
 
 @Injectable()
 export class ProductRepository {
@@ -26,5 +28,34 @@ export class ProductRepository {
     return {
       message: `Este Producto ${productExisting.name} ha sido eliminado`,
     };
+  }
+
+  //metodo para buscar un producto por su nombre
+  async getProductByName(name: string) {
+    return await this.productsDataBase.findOne({ where: { name: name } });
+  }
+
+  //metodo para crear un nuevo producto
+  async createProductRepository(createProductDto: CreatedProductDto) {
+    const newProduct = this.productsDataBase.create({
+      ...createProductDto,
+      createAt: new Date(),
+    });
+    await this.productsDataBase.save(newProduct);
+    return newProduct;
+  }
+  //metodo para actualizar un producto
+  async updateProductRepository(
+    productExisting: Products,
+    updateProductDto: UpdateProductDto,
+  ) {
+    productExisting.name = updateProductDto.name || productExisting.name;
+    productExisting.description =
+      updateProductDto.description || productExisting.description;
+    productExisting.price = updateProductDto.price || productExisting.price;
+    productExisting.stock = updateProductDto.stock || productExisting.stock;
+
+    await this.productsDataBase.save(productExisting);
+    return productExisting;
   }
 }
