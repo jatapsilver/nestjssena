@@ -173,8 +173,6 @@ npm run migration:run
 
 ### Ejemplo 1: Migración Inicial del E-commerce
 
-Basándome en tus entidades actuales:
-
 ```bash
 # Paso 1: Crear carpeta para migraciones
 mkdir -p src/migrations
@@ -320,7 +318,7 @@ TypeOrmModule.forRoot({
 
 - Verifica que realmente hiciste cambios en las entidades
 - Asegúrate de que las entidades estén en el path correcto
-- Revisa que `ormconfig.ts` apunte a las entidades correctas
+- Revisa que `typeorm.ts` apunte a las entidades correctas
 
 ### Error: "QueryFailedError"
 
@@ -440,7 +438,7 @@ Si encuentras problemas:
 1. Revisa los logs de TypeORM (con `logging: true`)
 2. Verifica la conexión a la base de datos
 3. Asegúrate de que todas las dependencias están instaladas
-4. Revisa que las rutas en `ormconfig.ts` sean correctas
+4. Revisa que las rutas en `typeorm.ts` sean correctas
 
 ---
 
