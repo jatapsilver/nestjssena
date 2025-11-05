@@ -1,0 +1,19 @@
+import { MigrationInterface, QueryRunner } from 'typeorm';
+
+export class AddColumnIsActiveToCategory1762356897193
+  implements MigrationInterface
+{
+  name = 'AddColumnIsActiveToCategory1762356897193';
+
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "products" ALTER COLUMN "price" TYPE numeric`,
+    );
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "products" ALTER COLUMN "price" TYPE numeric`,
+    );
+  }
+}
