@@ -13,7 +13,7 @@ const config: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   entities: ['src/entities/**/*.entity.ts'],
   migrations: ['src/migrations/**/*.ts'],
-  logging: true, // muestra por consola la interaccion con la base de datos
+  logging: false, // muestra por consola la interaccion con la base de datos
   synchronize: false, // sincroniza las entidades con la base de datos
   dropSchema: false, // limpia, borra y crea nuevamente todas las entidades
   migrationsTableName: 'migrations_history',
