@@ -13,6 +13,7 @@ import { Credential } from './entities/credential.entity';
 import { OrdersModule } from './orders/orders.module';
 import { SeedModule } from './seed/seed.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, DataLoaderUsers],
