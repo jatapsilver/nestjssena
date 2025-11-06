@@ -27,5 +27,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nest_sena:latest
+          tags: ${{ secrets.DOCKERHUBUSERNAME }}/nest_sena:latest
 
