@@ -31,6 +31,19 @@ export class CategoryController {
     return this.categoryService.findAllServices();
   }
 
+  //Endpoint para obtener una categoria por su id
+  @ApiOperation({ summary: 'Obtener una categoria por su id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Categorias obtenidas por id.',
+  })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Get('getCategory')
+  getCategory() {
+    return 'Devuelve su categoria por id';
+  }
+
   //Endpoint para crear una categoria
   @ApiOperation({ summary: 'Crear una categoria' })
   @ApiResponse({
